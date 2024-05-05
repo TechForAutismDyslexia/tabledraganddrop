@@ -1,0 +1,67 @@
+{
+        "1": {
+            "Preparing food": [
+                "Roasting a chicken",
+                "Baking cookies",
+                "Boiling vegetables"
+            ],
+            "Children's games": [
+                "Throwing a ball",
+                "Playing tag",
+                "Skipping rope"
+            ],
+            "Distracter": [
+                "Building a house"
+            ]
+        },
+        "2": {
+            "Being friendly": [
+                "To smile at a friend",
+                "to help with a job",
+                "to share a treat"
+            ],
+            "Doing artwork": [
+                "To paint a picture",
+                "To draw a design",
+                "To color a background"
+            ],
+            "Fixing something": [
+                "To bandage a knee",
+                "to glue a plate together",
+                "to untangle a fishing line"
+            ],
+            "Distracter": [
+                "To bounce a ball"
+            ]
+        },
+        "3": {
+            "Working for a living":[
+                "The farmer ploughed his land in the fall",
+                "A teacher was reading a book in the class",
+                "The tailer finished the sewing before lunch"
+            ],
+            "Things you'd like to avoid":[
+                "Dave was looking at most disgusting supper",
+                "Her awful neighbor was coming to complain again",
+                "The thought of going onstage made Sam's..."
+            ],
+            "Distracter": [
+                "The dress was very elegant but also very expensive"
+            ]
+        },
+        "4":{
+            "Putting things right":[
+                "Father was patching hole in the wall",
+                "Nancy knew that she could fix the table in the moment",
+                "More than anything else,Billy liked to repair radios"
+            ],
+            "Sounds of nature":[
+                "The stream seemed to tinkle as it flowed through...",
+                "Jeff liked to listen to the leaves rustling in the wind",
+                "The owl always started hooting a half-hour before..."
+            ],
+            "Distracter": [
+                "The man smiled happily as he read the birthday..."
+            ]
+        }
+}

@@ -1,38 +1,83 @@
-.App {
+/* .body{
+  background-color:rgb(186, 148, 222) ;
+
+} */
+.custom-table {
+  border-collapse: collapse;
+  margin: 20px 0;
+  width: 100%;
+  border: 2px solid black;
+}
+#title{
+  margin-left: 40%;
+}
+
+
+.table-header{
+    padding: 10px;
+  }
+.table-cell {
+  border: 1px solid black;
+  padding: 70px; /* Adjust padding as needed */
+  font-size: 16px; /* Adjust font size as needed */
   text-align: center;
+  width: 25%; /* Set equal width for each column */
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.cards-container {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  flex-wrap: wrap;
+  justify-content: flex-start;
 }
 
-.App-link {
-  color: #61dafb;
+.draggable {
+  display: inline-block;
+  position:relative;
+  border: 1px solid black;
+  padding: 15px; /* Adjusted card size for better alignment */
+  margin: 5px;
+  margin-top: 35px;
+  background-color: #e0e0e0;
+  cursor: move;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+
+.next {
+  margin-top: 20px;
+    margin-left: 50%;
+    position:relative;
+}
+
+#Restart,
+#logdata {
+  display: none;
+}
+@keyframes correctDropAnimation {
+  0% { transform: translateY(0); opacity: 1; }
+  50% { transform: translateY(-20px); opacity: 0.5; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes wrongDropAnimation {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+  100% { transform: translateX(0); }
+}
+
+.correct-drop {
+  animation: correctDropAnimation 0.5s ease;
+}
+
+.wrong-drop {
+  animation: wrongDropAnimation 0.5s ease;
+}
+.hover-animation {
+  transition: transform 0.3s ease-in-out;
+}
+
+.hover-animation:hover {
+  transform: scale(1.1);
 }
