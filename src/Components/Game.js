@@ -8,6 +8,9 @@ const DragAndDropTable = () => {
   const [arrayOfTries, setArrayOfTries] = useState([]);
   useEffect(() => {
     setTries(0);
+    if(currentPage===4){
+      logData();
+    }
   }, [currentPage]);
 
   const drag = event => {
@@ -21,28 +24,37 @@ const DragAndDropTable = () => {
   const drop = event => {
     event.preventDefault();
     const data = event.dataTransfer.getData("text");
+    const draggedElement = document.getElementById(data);
     const target = event.target;
     const targetType = target.getAttribute('data-type');
-    const draggedType = document.getElementById(data).getAttribute('data-type');
+    const draggedType = draggedElement.getAttribute('data-type');
   
     if (target.tagName === 'TD') {
       if (targetType === draggedType) {
         setTries(prevTries => prevTries + 1);
-        target.appendChild(document.getElementById(data));
-        document.getElementById(data).classList.add('correct-drop');
-        document.getElementById(data).classList.add('hover-animation'); // Apply hover animation class
+        const clonedElement = draggedElement.cloneNode(true);
+        target.appendChild(clonedElement);
+        clonedElement.classList.add('correct-drop');
+        clonedElement.classList.add('hover-animation');
         setTimeout(() => {
-          const draggedElement = document.getElementById(data);
-          if (draggedElement) {
-            draggedElement.classList.remove('correct-drop');
-            draggedElement.classList.remove('hover-animation'); // Remove hover animation class
+          if (clonedElement) {
+            clonedElement.classList.remove('correct-drop');
+            clonedElement.classList.remove('hover-animation');
           }
         }, 500);
+        draggedElement.style.display = 'none';
+        // const draggedElementParent = draggedElement.parentNode;
+        // if (draggedElementParent) {
+        //   console.log("Dragged element found:", draggedElement);
+        //   draggedElementParent.removeChild(draggedElement);
+        // }
+        // else{
+        //   console.log("Dragged element not found:", draggedElement);
+        // }
       } else {
         setTries(prevTries => prevTries + 1);
-        document.getElementById(data).classList.add('wrong-drop');
+        draggedElement.classList.add('wrong-drop');
         setTimeout(() => {
-          const draggedElement = document.getElementById(data);
           if (draggedElement) {
             draggedElement.classList.remove('wrong-drop');
           }
