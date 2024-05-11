@@ -64,8 +64,15 @@ body{
       
   }
   
-  #Restart,
+  #Restart{
+    margin-top: 20px;
+    margin-left: 50%;
+    position:relative;
+  }
   #logdata {
+    margin-top: 30px;
+    margin-left: 50%;
+    position:relative;
     display: none;
   }
   #tries-counter {

@@ -169,7 +169,7 @@ const DragAndDropTable = () => {
         <button style={{ display: currentPage < 4 ? 'block' : 'none'  }} onClick={nextPage} id="nextbutton" className='btn btn-dark'>Next</button>
       </div>
       <button onClick={() => window.location.reload()} id="Restart" className='btn btn-dark' style={{ display: currentPage > 3 ? 'block' : 'none' } }>Restart</button>
-      <button id="logdata" style={{ display: currentPage > 3 ? 'block' : 'none' }} className='btn btn-dark' onClick={logData}>Logdata</button>
+      <button id="logdata" style={{ display: currentPage > 3 ? 'block' : 'none' }} className='btn btn-info' onClick={logData}>Logdata</button>
     </div>
   );
 };
