@@ -1,5 +1,5 @@
 body{
-    background: linear-gradient(90deg, rgb(164, 222, 174) 0%, rgb(133, 222, 161) 38%, rgb(95, 197, 218) 100%);; 
+    background:#aed6dc;; 
   
   }
   .custom-table {
@@ -10,7 +10,9 @@ body{
   }
   #title{
     margin-top: 10px;
-    margin-left: 35%;
+    /* margin-left: 35%;
+     */
+    text-align: center;
     color: rgb(0, 0, 0);
   }
 
@@ -47,7 +49,7 @@ body{
     padding: 20px; /* increased padding for better alignment */
     margin: 10px; /* increased margin for better spacing */
     margin-top: 35px;
-    background-color: rgb(194, 202, 176); /* changed background color */
+    background-color: #ff9a8d; /* changed background color */
     cursor: move;
     box-shadow: 0 0 10px rgba(194, 202, 176,0.3); /* added box shadow */
   }
@@ -61,19 +63,26 @@ body{
     margin-top: 20px;
       margin-left: 50%;
       position:relative;
-      
+  }
+  #nextbutton{
+    background-color: #4a536b;
+    color: white;
   }
   
   #Restart{
     margin-top: 20px;
     margin-left: 50%;
     position:relative;
+    background-color: #315f72;
+    color: white;
   }
   #logdata {
     margin-top: 30px;
     margin-left: 50%;
     position:relative;
     display: none;
+    background-color: #315f72;
+    color: white;
   }
   #tries-counter {
     position: absolute;
