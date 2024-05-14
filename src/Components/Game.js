@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import jsonData from './data.json';
 import './game.css'; // Import CSS file for styling
-
+import correctaudio from '../Audio/correct.mp3';
+import wrongaudio from '../Audio/hooray.mp3';
 const DragAndDropTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [tries, setTries] = useState(0);
@@ -34,6 +35,8 @@ const DragAndDropTable = () => {
         setTries(prevTries => prevTries + 1);
         const clonedElement = draggedElement.cloneNode(true);
         target.appendChild(clonedElement);
+        const audio = new Audio(correctaudio);
+        audio.play();
         clonedElement.classList.add('correct-drop');
         clonedElement.classList.add('hover-animation');
         setTimeout(() => {
@@ -53,6 +56,8 @@ const DragAndDropTable = () => {
         // }
       } else {
         setTries(prevTries => prevTries + 1);
+        const audio = new Audio(wrongaudio);
+        audio.play();
         draggedElement.classList.add('wrong-drop');
         setTimeout(() => {
           if (draggedElement) {
