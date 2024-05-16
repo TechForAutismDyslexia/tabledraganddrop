@@ -178,20 +178,42 @@ const DragAndDropTable = () => {
   };
 
   return (
-    <div className='body'>
-      <h1 id="title" style={{color:'black'}}>Drag and Drop Table</h1>
-      <p id="tries-counter" style={{color:'black'}}>Tries: {tries}</p>
+    <div className="body container-fluid">
+      <h1 id="title" className="text-center">Drag and Drop Table</h1>
+      <p id="tries-counter" className="text-center">Tries: {tries}</p>
       {createTable()}
-      <div className='cardposition'>
+      <div className="cardposition">
         <div className="cards-container justify-content-center">{createCards()}</div>
       </div>
       <div className="next">
-        <button style={{ display: currentPage < 4 ? 'block' : 'none'  }} onClick={nextPage} id="nextbutton" className='btn btn-custom'>Next</button>
+        <button
+          style={{ display: currentPage < 4 ? 'block' : 'none' }}
+          onClick={nextPage}
+          id="nextbutton"
+          className='btn btn-custom btn-block'
+        >
+          Next
+        </button>
       </div>
-      <button onClick={() => window.location.reload()} id="Restart" className='btn btn-custom' style={{ display: currentPage > 3 ? 'block' : 'none' } }>Restart</button>
-      <button id="logdata" style={{ display: currentPage > 3 ? 'block' : 'none' }} className='btn btn-custom' onClick={logData}>Logdata</button>
+      <button
+        onClick={() => window.location.reload()}
+        id="Restart"
+        className='btn btn-custom btn-block'
+        style={{ display: currentPage > 3 ? 'block' : 'none' }}
+      >
+        Restart
+      </button>
+      <button
+        id="logdata"
+        className='btn btn-custom btn-block'
+        style={{ display: currentPage > 3 ? 'block' : 'none' }}
+        onClick={logData}
+      >
+        Logdata
+      </button>
     </div>
   );
 };
+
 
 export default DragAndDropTable;

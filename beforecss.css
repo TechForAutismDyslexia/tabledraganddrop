@@ -1,0 +1,123 @@
+body{
+    background:#aed6dc;; 
+  
+  }
+  .custom-table {
+    border-collapse: collapse;
+    margin: 20px 0;
+    width: 100%;
+    border: 3px solid rgb(0, 0, 0);
+  }
+  #title{
+    margin-top: 10px;
+    /* margin-left: 35%;
+     */
+    text-align: center;
+    color: rgb(0, 0, 0);
+  }
+
+  
+  .table-header{
+      padding: 10px;
+      text-align: center;
+      color: rgb(0, 0, 0);
+    }
+  .table-cell {
+    border: 3px solid rgb(0, 0, 0);
+    padding: 120px; /* Adjust padding as needed */
+    font-size: 16px; /* Adjust font size as needed */
+    text-align: center;
+    width: 25%; /* Set equal width for each column */
+  }
+  
+  
+  .cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+  .cardposition{
+    margin-left: 30px;
+  }
+  
+  .draggable {
+    display: inline-block;
+    position: relative;
+    font-weight: bold;
+    border-radius: 10px; /* added border radius */
+    border: 1px solid #ccc; /* changed border color and style */
+    padding: 20px; /* increased padding for better alignment */
+    margin: 10px; /* increased margin for better spacing */
+    margin-top: 35px;
+    background-color: #ff9a8d; /* changed background color */
+    cursor: move;
+    box-shadow: 0 0 10px rgba(194, 202, 176,0.3); /* added box shadow */
+  }
+  
+  .draggable:hover {
+    transform: scale(1.09); /* added hover effect */
+    box-shadow: 0 0 20px rgba(144, 174, 173, 0.9); /* increased box shadow on hover */
+  }
+  
+  .next {
+    margin-top: 20px;
+      margin-left: 50%;
+      position:relative;
+  }
+  #nextbutton{
+    background-color: #4a536b;
+    color: white;
+  }
+  
+  #Restart{
+    margin-top: 20px;
+    margin-left: 50%;
+    position:relative;
+    background-color: #315f72;
+    color: white;
+  }
+  #logdata {
+    margin-top: 30px;
+    margin-left: 50%;
+    position:relative;
+    display: none;
+    background-color: #315f72;
+    color: white;
+  }
+  #tries-counter {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+  }
+  @keyframes correctDropAnimation {
+    0% { transform: translateY(0); opacity: 1; }
+    50% { transform: translateY(-20px); opacity: 0.5; }
+    100% { transform: translateY(0); opacity: 1; }
+  }
+  
+  @keyframes wrongDropAnimation {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+    100% { transform: translateX(0); }
+  }
+  
+  .correct-drop {
+    animation: correctDropAnimation 0.5s ease;
+  }
+  
+  .wrong-drop {
+    animation: wrongDropAnimation 0.5s ease;
+  }
+  .hover-animation {
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .hover-animation:hover {
+    transform: scale(1.1);
+  }
+  
