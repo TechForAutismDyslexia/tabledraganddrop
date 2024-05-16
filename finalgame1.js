@@ -119,62 +119,47 @@ const DragAndDropTable = () => {
     const currentItem = jsonData[currentPage.toString()];
     const cards = [];
 
-    // Collect all cards including main and distracter cards
-    const allCards = [];
     for (const key in currentItem) {
       if (key !== 'Distracter') {
         const values = currentItem[key];
         values.forEach((value, index) => {
-          const card = {
-            id: `card_${key}_${index}_${currentPage}`,
-            type: key,
-            value: value
-          };
-          allCards.push(card);
+          const card = (
+            <div
+              key={`${key}_${index}_${currentPage}`}
+              id={`card_${key}_${index}_${currentPage}`}
+              className="draggable"
+              style={{color:'black'}}
+              draggable
+              onDragStart={drag}
+              data-type={key}
+            >
+              {value}
+            </div>
+          );
+          cards.push(card);
         });
       }
     }
 
+    // Add Distracter cards
     const distracterValues = currentItem['Distracter'];
     distracterValues.forEach((value, index) => {
-      const card = {
-        id: `card_Distracter_${index}_${currentPage}`,
-        type: 'Distracter',
-        value: value
-      };
-      allCards.push(card);
-    });
-
-    // Shuffle the cards
-    const shuffledCards = shuffleArray(allCards);
-
-    // Create JSX elements for shuffled cards
-    shuffledCards.forEach(card => {
-      const jsxCard = (
+      const card = (
         <div
-          key={card.id}
-          id={card.id}
+          key={`Distracter_${index}_${currentPage}`}
+          id={`card_Distracter_${index}_${currentPage}`}
           className="draggable"
           draggable
           onDragStart={drag}
-          data-type={card.type}
+          data-type="Distracter"
         >
-          {card.value}
+          {value}
         </div>
       );
-      cards.push(jsxCard);
+      cards.push(card);
     });
 
     return cards;
-  };
-
-  // Function to shuffle an array
-  const shuffleArray = array => {
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
   };
 
   return (
