@@ -1,12 +1,17 @@
 body{
-    background:#aed6dc;; 
+    background-image: url("./background1.jpg"); 
+    background-size:cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    
   
   }
   .custom-table {
-    border-collapse: collapse;
+    border-collapse: separate;
     margin: 20px 0;
     width: 100%;
-    border: 3px solid rgb(0, 0, 0);
+    border: none;
+    border-radius:30px;
   }
   #title{
     margin-top: 10px;
@@ -15,12 +20,14 @@ body{
     text-align: center;
     color: rgb(0, 0, 0);
   }
-
   
   .table-header{
+      border:3px solid black;
       padding: 10px;
       text-align: center;
       color: rgb(0, 0, 0);
+      border-radius: 15px;
+      background-color: #b68c53;
     }
   .table-cell {
     border: 3px solid rgb(0, 0, 0);
@@ -28,16 +35,23 @@ body{
     font-size: 16px; /* Adjust font size as needed */
     text-align: center;
     width: 25%; /* Set equal width for each column */
+    border-radius: 15px;
+    /* background-image: url('./background1.jpg');
+    background-size: 100%; */
+
+    /* background-color: #b7e5d8; */
   }
-  
   
   .cards-container {
     display: flex;
     flex-wrap: wrap;
-    justify-content: flex-start;
+    justify-content:center;
   }
   .cardposition{
+    border: 0px solid whitesmoke;
     margin-left: 30px;
+    background-color: rgb(179, 246, 176);
+    border-radius: 20px;
   }
   
   .draggable {
@@ -48,8 +62,9 @@ body{
     border: 1px solid #ccc; /* changed border color and style */
     padding: 20px; /* increased padding for better alignment */
     margin: 10px; /* increased margin for better spacing */
-    margin-top: 35px;
-    background-color: #ff9a8d; /* changed background color */
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background-color: #ff8a73; /* changed background color */
     cursor: move;
     box-shadow: 0 0 10px rgba(194, 202, 176,0.3); /* added box shadow */
   }

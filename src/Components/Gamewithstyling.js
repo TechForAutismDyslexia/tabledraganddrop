@@ -7,7 +7,7 @@ import { isMobile } from 'react-device-detect';
 import './game.css'; // Import CSS file for styling
 import correctaudio from '../Audio/correct.mp3';
 import wrongaudio from '../Audio/hooray.mp3';
-const DragAndDropTable = () => {
+const Dndtable = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [tries, setTries] = useState(0);
   const [arrayOfTries, setArrayOfTries] = useState([]);
@@ -183,12 +183,12 @@ const DragAndDropTable = () => {
 
   return (
     <DndProvider backend={isMobile?TouchBackend:HTML5Backend}>
-    <div className="body container-fluid maindiv">
+    <div className="body container-fluid">
       <h1 id="title" className="text-center">Drag and Drop Table</h1>
       <p id="tries-counter" className="text-center">Tries: {tries}</p>
       {createTable()}
       <div className="cardposition">
-        <div className="cards-container justify-content-center mb-2">{createCards()}</div>
+        <div className="cards-container justify-content-center">{createCards()}</div>
       </div>
       <div className="next">
         <button
@@ -222,4 +222,4 @@ const DragAndDropTable = () => {
 };
 
 
-export default DragAndDropTable;
+export default Dndtable;
