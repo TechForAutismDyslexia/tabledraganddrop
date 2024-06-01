@@ -135,4 +135,21 @@ body{
   .hover-animation:hover {
     transform: scale(1.1);
   }
+  @media (pointer: coarse) {
+    .draggable {
+      touch-action: none;
+      pointer-events: none;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+    }
+  }
   
+  .draggable:hover {
+    transform: scale(1.09);
+    box-shadow: 0 0 20px rgba(144, 174, 173, 0.9);
+  }
+  
+  .draggable:active {
+    transform: scale(0.9);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  }
