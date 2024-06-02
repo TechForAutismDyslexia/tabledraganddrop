@@ -79,12 +79,19 @@ const DragAndDropTable = () => {
       const touch = event.changedTouches[0];
       const draggedElement = document.getElementById(touches[0].target.id);
       const rect = draggedElement.getBoundingClientRect();
-      const x = touch.clientX - rect.left;
-      const y = touch.clientY - rect.top;
-      draggedElement.style.transform = `translate(${x}px, ${y}px)`;
+  
+      // Cache the draggedElement and rect variables
+      const cachedDraggedElement = draggedElement;
+      const cachedRect = rect;
+  
+      // Use requestAnimationFrame to schedule the update
+      requestAnimationFrame(() => {
+        const x = touch.clientX - cachedRect.left;
+        const y = touch.clientY - cachedRect.top;
+        cachedDraggedElement.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+      });
     }
   };
-
   const touchEnd = (event) => {
     event.preventDefault();
     if (event.type === "touchend") {
