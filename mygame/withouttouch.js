@@ -3,46 +3,33 @@ import jsonData from './data.json';
 import './game.css'; // Import CSS file for styling
 import correctaudio from '../Audio/correct.mp3';
 import wrongaudio from '../Audio/hooray.mp3';
-
 const DragAndDropTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [touches, setTouches] = useState([]);
   const [tries, setTries] = useState(0);
   const [arrayOfTries, setArrayOfTries] = useState([]);
-
   useEffect(() => {
     setTries(0);
-    if (currentPage === 4) {
+    if(currentPage===4){
       logData();
     }
   }, [currentPage]);
 
-  const dragStart = (event) => {
-    if (event.type === "touchstart") {
-      setTouches([event.changedTouches[0]]);
-    } else {
-      event.dataTransfer.setData("text", event.target.id);
-    }
-  };
-
-  const drag = (event) => {
+  const drag = event => {
     event.dataTransfer.setData("text", event.target.id);
   };
-
-  const allowDrop = (event) => {
+  
+  const allowDrop = event => {
     event.preventDefault();
   };
 
-  const drop = (eventOrData, dropZone) => {
-    if (eventOrData instanceof Event) {
-      eventOrData.preventDefault();
-    }
-    const data = eventOrData.dataTransfer? eventOrData.dataTransfer.getData("text") : eventOrData.id;
+  const drop = event => {
+    event.preventDefault();
+    const data = event.dataTransfer.getData("text");
     const draggedElement = document.getElementById(data);
-    const target = dropZone;
+    const target = event.target;
     const targetType = target.getAttribute('data-type');
     const draggedType = draggedElement.getAttribute('data-type');
-
+  
     if (target.tagName === 'TD') {
       if (targetType === draggedType) {
         setTries(prevTries => prevTries + 1);
@@ -59,6 +46,14 @@ const DragAndDropTable = () => {
           }
         }, 500);
         draggedElement.style.display = 'none';
+        // const draggedElementParent = draggedElement.parentNode;
+        // if (draggedElementParent) {
+        //   console.log("Dragged element found:", draggedElement);
+        //   draggedElementParent.removeChild(draggedElement);
+        // }
+        // else{
+        //   console.log("Dragged element not found:", draggedElement);
+        // }
       } else {
         setTries(prevTries => prevTries + 1);
         const audio = new Audio(wrongaudio);
@@ -72,37 +67,7 @@ const DragAndDropTable = () => {
       }
     }
   };
-
-  const touchMove = (event) => {
-    event.preventDefault();
-    if (event.type === "touchmove") {
-      const touch = event.changedTouches[0];
-      const draggedElement = document.getElementById(touches[0].target.id);
-      const rect = draggedElement.getBoundingClientRect();
-      const x = touch.clientX - rect.left;
-      const y = touch.clientY - rect.top;
-      draggedElement.style.transform = `translate(${x}px, ${y}px)`;
-    }
-  };
-
-  const touchEnd = (event) => {
-    event.preventDefault();
-    if (event.type === "touchend") {
-      const touch = event.changedTouches[0];
-      const draggedElement = document.getElementById(touches[0].target.id);
-      const rect = draggedElement.getBoundingClientRect();
-      const data = {
-        id: draggedElement.id,
-        x: touch.clientX - rect.left,
-        y: touch.clientY - rect.top
-      };
-      draggedElement.style.removeProperty('transform');
-      const dropZone = document.elementFromPoint(touch.clientX, touch.clientY);
-      drop(data, dropZone);
-      setTouches([]);
-    }
-  };
-
+  
   const nextPage = () => {
     setArrayOfTries(prevArray => [...prevArray, tries]);
     setCurrentPage(prevPage => prevPage + 1);
@@ -116,16 +81,14 @@ const DragAndDropTable = () => {
   const createTable = () => {
     const currentItem = jsonData[currentPage.toString()];
 
-    const headers = Object.keys(currentItem).filter(key => key!== 'Distracter');
+    const headers = Object.keys(currentItem).filter(key => key !== 'Distracter');
 
     const getTableCell = header => {
       return (
         <td
           key={header}
-          onDrop={(event) => drop(event, event.target)}
+          onDrop={drop}
           onDragOver={allowDrop}
-          onTouchMove={touchMove}
-          onTouchEnd={touchEnd}
           data-type={header}
           className="table-cell"
         ></td>
@@ -145,7 +108,7 @@ const DragAndDropTable = () => {
         <thead>
           <tr>{tableHeaders}</tr>
         </thead>
-<tbody>
+        <tbody>
           <tr>{tableCells}</tr>
         </tbody>
       </table>
@@ -159,7 +122,7 @@ const DragAndDropTable = () => {
     // Collect all cards including main and distracter cards
     const allCards = [];
     for (const key in currentItem) {
-      if (key!== 'Distracter') {
+      if (key !== 'Distracter') {
         const values = currentItem[key];
         values.forEach((value, index) => {
           const card = {
@@ -193,10 +156,7 @@ const DragAndDropTable = () => {
           id={card.id}
           className="draggable"
           draggable
-          onTouchStart={(event) => dragStart(event)}
-          onTouchMove={(event) => touchMove(event)}
-          onTouchEnd={(event) => touchEnd(event)}
-          onDragStart={(event) => drag(event)}
+          onDragStart={drag}
           data-type={card.type}
         >
           {card.value}
@@ -227,7 +187,7 @@ const DragAndDropTable = () => {
       </div>
       <div className="next">
         <button
-          style={{ display: currentPage < 4? 'block' : 'none' }}
+          style={{ display: currentPage < 4 ? 'block' : 'none' }}
           onClick={nextPage}
           id="nextbutton"
           className='btn btn-custom btn-block'
@@ -239,14 +199,14 @@ const DragAndDropTable = () => {
         onClick={() => window.location.reload()}
         id="Restart"
         className='btn btn-custom btn-block'
-        style={{ display: currentPage > 3? 'block' : 'none' }}
+        style={{ display: currentPage > 3 ? 'block' : 'none' }}
       >
         Restart
       </button>
       <button
         id="logdata"
         className='btn btn-custom btn-block'
-        style={{ display: currentPage > 3? 'block' : 'none' }}
+        style={{ display: currentPage > 3 ? 'block' : 'none' }}
         onClick={logData}
       >
         Logdata
@@ -254,5 +214,4 @@ const DragAndDropTable = () => {
     </div>
   );
 };
-
 export default DragAndDropTable;
