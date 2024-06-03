@@ -202,11 +202,11 @@ const DragAndDropTable = () => {
       {/* <p id="tries-counter" className="text-center">Tries: {tries}</p> */}
       {createTable()}
       <div className="cardposition">
-        <div className="cards-container justify-content-center mb-2">{createCards()}</div>
+        <div className="cards-container justify-content-center align-items-center mb-2">{createCards()}</div>
       </div>
       <div className="buttons">
         {currentPage < (Object.keys(jsonData).length) ? (
-          <div className='nextbutton d-flex justify-content-center'>
+          <div className='nextbutton d-flex justify-content-center align-items-center'>
             <button
               style={{ display: 'none' }}
               onClick={nextPage}
@@ -217,6 +217,7 @@ const DragAndDropTable = () => {
             </button>
           </div>
         ) : (
+          <div className='logbutton d-flex justify-content-center align-items-center'> 
           <button
             id="logdata"
             className='btn btn-custom btn-block'
@@ -225,8 +226,9 @@ const DragAndDropTable = () => {
           >
             Logdata
           </button>
+          </div>
         )}
-        <div className="submitbutton d-flex justify-content-center">
+        <div className="submitbutton d-flex justify-content-center align-items-center">
           <button
             style={{ display: 'block' }}
             onClick={handleSubmit}

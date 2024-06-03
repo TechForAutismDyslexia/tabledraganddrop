@@ -82,19 +82,11 @@ body{
     box-shadow: 0 0 20px rgba(144, 174, 173, 0.9); /* increased box shadow on hover */
   }
   
-  #nextbutton,#submitbutton{
+  #nextbutton,#submitbutton,#logdata{
     background-color: #4a536b;
     color: white;
   }
-  
-  #logdata {
-    margin-top: 30px;
-    margin-left: 50%;
-    position:relative;
-    display: none;
-    background-color: #315f72;
-    color: white;
-  }
+
   @keyframes correctDropAnimation {
     0% { transform: translateY(0); opacity: 1; }
     50% { transform: translateY(-20px); opacity: 0.5; }
