@@ -3,21 +3,24 @@ import jsonData from './data.json';
 import './game.css'; // Import CSS file for styling
 import correctaudio from '../Audio/correct.mp3';
 import wrongaudio from '../Audio/hooray.mp3';
+import Confetti from 'react-confetti';
+
 const DragAndDropTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [tries, setTries] = useState(0);
-  const [arrayOfTries, setArrayOfTries] = useState([]);
+
+  const [correctTries, setCorrectTries] = useState(0);
+  const [showConfetti, setShowConfetti] = useState(false);
+
   useEffect(() => {
-    setTries(0);
-    if(currentPage===4){
-      logData();
-    }
+    setCorrectTries(0);
+    resetButtonsVisibility();
   }, [currentPage]);
 
   const drag = event => {
     event.dataTransfer.setData("text", event.target.id);
   };
-  
+
   const allowDrop = event => {
     event.preventDefault();
   };
@@ -29,31 +32,25 @@ const DragAndDropTable = () => {
     const target = event.target;
     const targetType = target.getAttribute('data-type');
     const draggedType = draggedElement.getAttribute('data-type');
-  
+
     if (target.tagName === 'TD') {
       if (targetType === draggedType) {
         setTries(prevTries => prevTries + 1);
         const clonedElement = draggedElement.cloneNode(true);
+        clonedElement.draggable = false; // Prevent further dragging
+        clonedElement.style.userSelect = 'none'; // Disable text selection
         target.appendChild(clonedElement);
         const audio = new Audio(correctaudio);
         audio.play();
+        setCorrectTries(prevCorrectTries => prevCorrectTries + 1);
         clonedElement.classList.add('correct-drop');
         clonedElement.classList.add('hover-animation');
         setTimeout(() => {
           if (clonedElement) {
-            clonedElement.classList.remove('correct-drop');
             clonedElement.classList.remove('hover-animation');
           }
         }, 500);
         draggedElement.style.display = 'none';
-        // const draggedElementParent = draggedElement.parentNode;
-        // if (draggedElementParent) {
-        //   console.log("Dragged element found:", draggedElement);
-        //   draggedElementParent.removeChild(draggedElement);
-        // }
-        // else{
-        //   console.log("Dragged element not found:", draggedElement);
-        // }
       } else {
         setTries(prevTries => prevTries + 1);
         const audio = new Audio(wrongaudio);
@@ -67,20 +64,17 @@ const DragAndDropTable = () => {
       }
     }
   };
-  
+
   const nextPage = () => {
-    setArrayOfTries(prevArray => [...prevArray, tries]);
     setCurrentPage(prevPage => prevPage + 1);
   };
 
   const logData = () => {
-    setArrayOfTries(prevArray => [...prevArray, tries]);
-    console.log('The number of tries for each page are:', arrayOfTries);
+    console.log("The number of tries:", tries);
   };
 
   const createTable = () => {
     const currentItem = jsonData[currentPage.toString()];
-
     const headers = Object.keys(currentItem).filter(key => key !== 'Distracter');
 
     const getTableCell = header => {
@@ -104,7 +98,7 @@ const DragAndDropTable = () => {
     const tableCells = headers.map(header => getTableCell(header));
 
     return (
-      <table className="custom-table">
+      <table className="custom-table mt-3">
         <thead>
           <tr>{tableHeaders}</tr>
         </thead>
@@ -177,41 +171,75 @@ const DragAndDropTable = () => {
     return array;
   };
 
+  const handleSubmit = () => {
+    const currentItem = jsonData[currentPage.toString()];
+    const numberOfDraggableCards = Object.keys(currentItem).reduce((sum, key) => {
+      if (key !== 'Distracter') {
+        sum += currentItem[key].length;
+      }
+      return sum;
+    }, 0);
+    const numberOfCorrectDropsNeeded = numberOfDraggableCards;
+    if (correctTries === numberOfCorrectDropsNeeded) {
+      const nextButton = document.getElementById('nextbutton');
+      nextButton.style.display = 'block';
+      const submitButton = document.getElementById('submitbutton');
+      submitButton.style.display = 'none';
+      setShowConfetti(true);
+      setTimeout(() => setShowConfetti(false), 5000); // Confetti for 5 seconds
+    }
+  };
+
+  const resetButtonsVisibility = () => {
+    const nextButton = document.getElementById('nextbutton');
+    const submitButton = document.getElementById('submitbutton');
+    if (nextButton) nextButton.style.display = 'none';
+    if (submitButton) submitButton.style.display = 'block';
+  };
+
   return (
     <div className="body container-fluid maindiv">
-      <h1 id="title" className="text-center">Drag and Drop Table</h1>
-      <p id="tries-counter" className="text-center">Tries: {tries}</p>
+      {/* <p id="tries-counter" className="text-center">Tries: {tries}</p> */}
       {createTable()}
       <div className="cardposition">
         <div className="cards-container justify-content-center mb-2">{createCards()}</div>
       </div>
-      <div className="next">
-        <button
-          style={{ display: currentPage < 4 ? 'block' : 'none' }}
-          onClick={nextPage}
-          id="nextbutton"
-          className='btn btn-custom btn-block'
-        >
-          Next
-        </button>
+      <div className="buttons">
+        {currentPage < (Object.keys(jsonData).length) ? (
+          <div className='nextbutton d-flex justify-content-center'>
+            <button
+              style={{ display: 'none' }}
+              onClick={nextPage}
+              id="nextbutton"
+              className='btn btn-custom btn-block'
+            >
+              Next
+            </button>
+          </div>
+        ) : (
+          <button
+            id="logdata"
+            className='btn btn-custom btn-block'
+            style={{ display: currentPage > ((Object.keys(jsonData).length) - 1) ? 'block' : 'none' }}
+            onClick={logData}
+          >
+            Logdata
+          </button>
+        )}
+        <div className="submitbutton d-flex justify-content-center">
+          <button
+            style={{ display: 'block' }}
+            onClick={handleSubmit}
+            id="submitbutton"
+            className='btn btn-custom btn-primary mt-2'
+          >
+            Submit
+          </button>
+        </div>
       </div>
-      <button
-        onClick={() => window.location.reload()}
-        id="Restart"
-        className='btn btn-custom btn-block'
-        style={{ display: currentPage > 3 ? 'block' : 'none' }}
-      >
-        Restart
-      </button>
-      <button
-        id="logdata"
-        className='btn btn-custom btn-block'
-        style={{ display: currentPage > 3 ? 'block' : 'none' }}
-        onClick={logData}
-      >
-        Logdata
-      </button>
+      {showConfetti && <Confetti width={window.innerWidth} height={window.innerHeight}/>}
     </div>
   );
 };
+
 export default DragAndDropTable;
