@@ -202,7 +202,7 @@ const DragAndDropTable = () => {
       {/* <p id="tries-counter" className="text-center">Tries: {tries}</p> */}
       {createTable()}
       <div className="cardposition">
-        <div className="cards-container justify-content-center align-items-center mb-2">{createCards()}</div>
+        <div className="cards-container d-flex justify-content-center align-items-center mb-2">{createCards()}</div>
       </div>
       <div className="buttons">
         {currentPage < (Object.keys(jsonData).length) ? (

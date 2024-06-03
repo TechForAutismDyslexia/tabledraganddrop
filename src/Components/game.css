@@ -44,11 +44,7 @@ body{
     /* background-color: #b7e5d8; */
   }
   
-  .cards-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content:center;
-  }
+
   .cardposition{
     border: 0px solid whitesmoke;
     margin-left: 30px;
