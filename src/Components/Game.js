@@ -17,17 +17,21 @@ const DragAndDropTable = () => {
     resetButtonsVisibility();
   }, [currentPage]);
 
-  const drag = event => {
+  const drag = (event) => {
     event.dataTransfer.setData("text", event.target.id);
   };
 
-  const allowDrop = event => {
+  const touchStart = (event) => {
+    event.target.setAttribute('data-touch-id', event.target.id);
+  };
+
+  const allowDrop = (event) => {
     event.preventDefault();
   };
 
-  const drop = event => {
+  const drop = (event) => {
     event.preventDefault();
-    const data = event.dataTransfer.getData("text");
+    const data = event.dataTransfer ? event.dataTransfer.getData("text") : event.target.getAttribute('data-touch-id');
     const draggedElement = document.getElementById(data);
     const target = event.target;
     const targetType = target.getAttribute('data-type');
@@ -65,6 +69,23 @@ const DragAndDropTable = () => {
     }
   };
 
+  const touchMove = (event) => {
+    const touch = event.touches[0];
+    const element = document.elementFromPoint(touch.clientX, touch.clientY);
+    if (element && element.tagName === 'TD' && element.getAttribute('data-type')) {
+      element.style.background = 'lightblue';
+    }
+  };
+
+  const touchEnd = (event) => {
+    const touch = event.changedTouches[0];
+    const element = document.elementFromPoint(touch.clientX, touch.clientY);
+    if (element && element.tagName === 'TD' && element.getAttribute('data-type')) {
+      element.style.background = '';
+      drop({ target: element, type: 'touchend', preventDefault: () => {} });
+    }
+  };
+
   const nextPage = () => {
     setCurrentPage(prevPage => prevPage + 1);
   };
@@ -83,6 +104,8 @@ const DragAndDropTable = () => {
           key={header}
           onDrop={drop}
           onDragOver={allowDrop}
+          onTouchEnd={touchEnd}
+          onTouchMove={touchMove}
           data-type={header}
           className="table-cell"
         ></td>
@@ -151,6 +174,7 @@ const DragAndDropTable = () => {
           className="draggable"
           draggable
           onDragStart={drag}
+          onTouchStart={touchStart}
           data-type={card.type}
         >
           {card.value}
