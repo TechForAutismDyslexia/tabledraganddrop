@@ -3,8 +3,9 @@ import jsonData from './data.json';
 import './game.css'; // Import CSS file for styling
 import correctaudio from '../Audio/correct.mp3';
 import wrongaudio from '../Audio/hooray.mp3';
+import instructionaudio from '../Audio/instructionaudio.wav'
 import Confetti from 'react-confetti';
-
+import { Popover } from 'bootstrap';
 const DragAndDropTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [tries, setTries] = useState(0);
@@ -19,7 +20,7 @@ const DragAndDropTable = () => {
 
   const drag = event => {
     event.dataTransfer.setData("text", event.target.id);
-    
+
   };
 
   const allowDrop = event => {
@@ -73,6 +74,11 @@ const DragAndDropTable = () => {
   const logData = () => {
     console.log("The number of tries:", tries);
   };
+  const infoaudio = () => {
+    const audio = new Audio(instructionaudio);
+    audio.play();
+
+  }
 
   const createTable = () => {
     const currentItem = jsonData[currentPage.toString()];
@@ -197,9 +203,21 @@ const DragAndDropTable = () => {
     if (nextButton) nextButton.style.display = 'none';
     if (submitButton) submitButton.style.display = 'block';
   };
-
+  const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
+  const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new Popover(popoverTriggerEl))
+  console.log(popoverList)
   return (
     <div className="body container-fluid maindiv">
+      <div className='infobutton d-flex justify-content-end'>
+        <button type="button" className='btn btn-warning mt-1' data-bs-container='body' data-bs-toggle="popover" data-bs-title="Instruction" data-bs-placement="left" data-bs-content="The distractor card doesm't drop in any table cell.">
+          Instruction
+        </button>
+        <button type='button' className='btn audiobutton' onClick={infoaudio}>
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="yellow" class="bi bi-play-circle-fill" viewBox="0 0 16 16">
+            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M6.79 5.093A.5.5 0 0 0 6 5.5v5a.5.5 0 0 0 .79.407l3.5-2.5a.5.5 0 0 0 0-.814z" />
+          </svg>
+        </button>
+      </div>
       {/* <p id="tries-counter" className="text-center">Tries: {tries}</p> */}
       {createTable()}
       <div className="cardposition">
@@ -218,15 +236,15 @@ const DragAndDropTable = () => {
             </button>
           </div>
         ) : (
-          <div className='logdata d-flex justify-content-center align-items-center'> 
-          <button
-            id="logdata"
-            className='btn btn-custom btn-block'
-            style={{ display: currentPage > ((Object.keys(jsonData).length) - 1) ? 'block' : 'none' }}
-            onClick={logData}
-          >
-            Logdata
-          </button>
+          <div className='logdata d-flex justify-content-center align-items-center'>
+            <button
+              id="logdata"
+              className='btn btn-custom btn-block'
+              style={{ display: currentPage > ((Object.keys(jsonData).length) - 1) ? 'block' : 'none' }}
+              onClick={logData}
+            >
+              Logdata
+            </button>
           </div>
         )}
         <div className="submitbutton d-flex justify-content-center align-items-center">
@@ -240,7 +258,7 @@ const DragAndDropTable = () => {
           </button>
         </div>
       </div>
-      {showConfetti && <Confetti width={window.innerWidth} height={window.innerHeight}/>}
+      {showConfetti && <Confetti width={window.innerWidth} height={window.innerHeight} />}
     </div>
   );
 };
