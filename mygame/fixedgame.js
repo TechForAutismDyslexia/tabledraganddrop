@@ -3,12 +3,13 @@ import jsonData from './data.json';
 import './game.css'; // Import CSS file for styling
 import correctaudio from '../Audio/correct.mp3';
 import wrongaudio from '../Audio/hooray.mp3';
+import instructionaudio from '../Audio/instructionaudio.wav'
 import Confetti from 'react-confetti';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-
+import { Popover } from 'bootstrap';
 const DragAndDropTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [tries, setTries] = useState(0);
+
   const [correctTries, setCorrectTries] = useState(0);
   const [showConfetti, setShowConfetti] = useState(false);
 
@@ -17,45 +18,52 @@ const DragAndDropTable = () => {
     resetButtonsVisibility();
   }, [currentPage]);
 
-  const onDragEnd = result => {
-    const { destination, draggableId } = result;
+  const drag = event => {
+    event.dataTransfer.setData("text", event.target.id);
 
-    if (!destination) {
-      return;
-    }
+  };
 
-    const draggedElement = document.getElementById(draggableId);
-    const target = document.querySelector(`[data-type="${destination.droppableId}"]`);
+  const allowDrop = event => {
+    event.preventDefault();
+  };
+
+  const drop = event => {
+    event.preventDefault();
+    const data = event.dataTransfer.getData("text");
+    const draggedElement = document.getElementById(data);
+    const target = event.target;
     const targetType = target.getAttribute('data-type');
     const draggedType = draggedElement.getAttribute('data-type');
 
-    if (targetType === draggedType) {
-      setTries(prevTries => prevTries + 1);
-      const clonedElement = draggedElement.cloneNode(true);
-      clonedElement.draggable = false; // Prevent further dragging
-      clonedElement.style.userSelect = 'none'; // Disable text selection
-      target.appendChild(clonedElement);
-      const audio = new Audio(correctaudio);
-      audio.play();
-      setCorrectTries(prevCorrectTries => prevCorrectTries + 1);
-      clonedElement.classList.add('correct-drop');
-      clonedElement.classList.add('hover-animation');
-      setTimeout(() => {
-        if (clonedElement) {
-          clonedElement.classList.remove('hover-animation');
-        }
-      }, 500);
-      draggedElement.style.display = 'none';
-    } else {
-      setTries(prevTries => prevTries + 1);
-      const audio = new Audio(wrongaudio);
-      audio.play();
-      draggedElement.classList.add('wrong-drop');
-      setTimeout(() => {
-        if (draggedElement) {
-          draggedElement.classList.remove('wrong-drop');
-        }
-      }, 500);
+    if (target.tagName === 'TD') {
+      if (targetType === draggedType) {
+        setTries(prevTries => prevTries + 1);
+        const clonedElement = draggedElement.cloneNode(true);
+        clonedElement.draggable = false; // Prevent further dragging
+        clonedElement.style.userSelect = 'none'; // Disable text selection
+        target.appendChild(clonedElement);
+        const audio = new Audio(correctaudio);
+        audio.play();
+        setCorrectTries(prevCorrectTries => prevCorrectTries + 1);
+        clonedElement.classList.add('correct-drop');
+        clonedElement.classList.add('hover-animation');
+        setTimeout(() => {
+          if (clonedElement) {
+            clonedElement.classList.remove('hover-animation');
+          }
+        }, 500);
+        draggedElement.style.display = 'none';
+      } else {
+        setTries(prevTries => prevTries + 1);
+        const audio = new Audio(wrongaudio);
+        audio.play();
+        draggedElement.classList.add('wrong-drop');
+        setTimeout(() => {
+          if (draggedElement) {
+            draggedElement.classList.remove('wrong-drop');
+          }
+        }, 500);
+      }
     }
   };
 
@@ -66,6 +74,11 @@ const DragAndDropTable = () => {
   const logData = () => {
     console.log("The number of tries:", tries);
   };
+  const infoaudio = () => {
+    const audio = new Audio(instructionaudio);
+    audio.play();
+
+  }
 
   const createTable = () => {
     const currentItem = jsonData[currentPage.toString()];
@@ -75,6 +88,8 @@ const DragAndDropTable = () => {
       return (
         <td
           key={header}
+          onDrop={drop}
+          onDragOver={allowDrop}
           data-type={header}
           className="table-cell"
         ></td>
@@ -137,20 +152,16 @@ const DragAndDropTable = () => {
     // Create JSX elements for shuffled cards
     shuffledCards.forEach(card => {
       const jsxCard = (
-        <Draggable key={card.id} draggableId={card.id} index={cards.length}>
-          {(provided) => (
-            <div
-              ref={provided.innerRef}
-              {...provided.draggableProps}
-              {...provided.dragHandleProps}
-              id={card.id}
-              className="draggable"
-              data-type={card.type}
-            >
-              {card.value}
-            </div>
-          )}
-        </Draggable>
+        <div
+          key={card.id}
+          id={card.id}
+          className="draggable"
+          draggable
+          onDragStart={drag}
+          data-type={card.type}
+        >
+          {card.value}
+        </div>
       );
       cards.push(jsxCard);
     });
@@ -192,28 +203,28 @@ const DragAndDropTable = () => {
     if (nextButton) nextButton.style.display = 'none';
     if (submitButton) submitButton.style.display = 'block';
   };
-
+  const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
+  const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new Popover(popoverTriggerEl))
+  console.log(popoverList)
   return (
     <div className="body container-fluid maindiv">
+      <div className='infobutton d-flex justify-content-end'>
+        <button type="button" className='btn btn-warning mt-1' data-bs-container='body' data-bs-toggle="popover" data-bs-title="Instruction" data-bs-placement="left" data-bs-content="The distractor card doesm't drop in any table cell.">
+          Instruction
+        </button>
+        <button type='button' className='btn audiobutton' onClick={infoaudio}>
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="yellow" class="bi bi-play-circle-fill" viewBox="0 0 16 16">
+            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M6.79 5.093A.5.5 0 0 0 6 5.5v5a.5.5 0 0 0 .79.407l3.5-2.5a.5.5 0 0 0 0-.814z" />
+          </svg>
+        </button>
+      </div>
+      {/* <p id="tries-counter" className="text-center">Tries: {tries}</p> */}
       {createTable()}
       <div className="cardposition">
-        <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable droppableId="cards" direction="horizontal">
-            {(provided) => (
-              <div
-                className="cards-container justify-content-center align-items-center mb-2"
-                {...provided.droppableProps}
-                ref={provided.innerRef}
-              >
-                {createCards()}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-        </DragDropContext>
+        <div className="cards-container justify-content-center align-items-center mb-2">{createCards()}</div>
       </div>
       <div className="buttons">
-        {currentPage < Object.keys(jsonData).length ? (
+        {currentPage < (Object.keys(jsonData).length) ? (
           <div className='nextbutton d-flex justify-content-center align-items-center'>
             <button
               style={{ display: 'none' }}
@@ -225,11 +236,11 @@ const DragAndDropTable = () => {
             </button>
           </div>
         ) : (
-          <div className='logdata d-flex justify-content-center align-items-center'> 
+          <div className='logdata d-flex justify-content-center align-items-center'>
             <button
               id="logdata"
               className='btn btn-custom btn-block'
-              style={{ display: currentPage > Object.keys(jsonData).length - 1 ? 'block' : 'none' }}
+              style={{ display: currentPage > ((Object.keys(jsonData).length) - 1) ? 'block' : 'none' }}
               onClick={logData}
             >
               Logdata
@@ -247,7 +258,7 @@ const DragAndDropTable = () => {
           </button>
         </div>
       </div>
-      {showConfetti && <Confetti width={window.innerWidth} height={window.innerHeight}/>}
+      {showConfetti && <Confetti width={window.innerWidth} height={window.innerHeight} />}
     </div>
   );
 };
