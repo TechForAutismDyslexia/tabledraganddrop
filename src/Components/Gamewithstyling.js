@@ -38,7 +38,7 @@ const DragAndDropTable = () => {
   };
 
   const handleDrop = (item, monitor, type) => {
-    if (item.type === type &&monitor.canDrop()) {
+    if (item.type === type) {
       setTries(prevTries => prevTries + 1);
       const audio = new Audio(correctaudio);
       audio.play();
@@ -161,7 +161,7 @@ const DragAndDropTable = () => {
 
   const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
   const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new Popover(popoverTriggerEl));
-  console.log(popoverList);
+  // console.log(popoverList);
 
   return (
     <DndProvider backend={HTML5Backend}>
@@ -221,42 +221,25 @@ const DragAndDropTable = () => {
   );
 };
 
-const DraggableCard = ({ card }) => {
-  const [{ isDragging }, drag] = useDrag(() => ({
-    type: ItemTypes.CARD,
-    item: { id: card.id, type: card.type },
-    collect: (monitor) => ({
-      isDragging: monitor.isDragging(),
-    }),
-  }), [card]);
-
-  const cardStyle = {
-    opacity: isDragging ? 0.5 : 1,
-    cursor: 'move',
-  };
-
-  return (
-    <div
-      ref={drag}
-      style={cardStyle}
-      className="draggable"
-      draggable
-      data-type={card.type}
-    >
-      <img src={card.value} alt={card.type} />
-    </div>
-  );
-};
-
 const TableCell = ({ header, onDrop }) => {
   const [{ isOver, canDrop }, drop] = useDrop(() => ({
     accept: ItemTypes.CARD,
-    drop: (item, monitor) => onDrop(item, monitor, header),
+    
+    drop: (item, monitor) => {
+      console.log("Dropped item:", item);
+      console.log("Dropped on header:", header);
+      onDrop(item, monitor, header);
+    },
+    canDrop: (item) => {
+      console.log("Can drop item:", item);
+      console.log("Can drop on header:", header);
+      return item.type === header;
+    },
     collect: (monitor) => ({
       isOver: monitor.isOver(),
       canDrop: monitor.canDrop(),
     }),
-  }), [header]);
+  }), [header, onDrop]);
 
   const cellStyle = {
     backgroundColor: isOver ? (canDrop ? 'lightgreen' : 'red') : 'white',
@@ -269,6 +252,35 @@ const TableCell = ({ header, onDrop }) => {
       className="table-cell"
       data-type={header}
     ></td>
+  );
+};
+
+
+const DraggableCard = ({ card }) => {
+  const [item, drag] = useDrag(() => ({
+    type: ItemTypes.CARD,
+    item: card,
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  }));
+
+  const cardStyle = {
+    opacity: item.isDragging ? 0.5 : 1,
+    cursor: 'move',
+  };
+
+  return (
+    <div
+      ref={drag}
+      style={cardStyle}
+      className="draggable"
+      draggable="true"
+      data-type={card.type}
+    >
+      {/* <img src={card.value} alt={card.type} /> */}
+      <div className="card-text">{card.value}</div> {/* Display text content */}
+    </div>
   );
 };
 
