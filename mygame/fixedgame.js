@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import jsonData from './data.json';
-import './game.css'; // Import CSS file for styling
+import './game.css'; 
 import correctaudio from '../Audio/correct.mp3';
 import wrongaudio from '../Audio/hooray.mp3';
 import instructionaudio from '../Audio/instructionaudio.wav'
@@ -16,6 +16,8 @@ const DragAndDropTable = () => {
   useEffect(() => {
     setCorrectTries(0);
     resetButtonsVisibility();
+    const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
+    const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new Popover(popoverTriggerEl))
   }, [currentPage]);
 
   const drag = event => {
@@ -203,9 +205,8 @@ const DragAndDropTable = () => {
     if (nextButton) nextButton.style.display = 'none';
     if (submitButton) submitButton.style.display = 'block';
   };
-  const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
-  const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new Popover(popoverTriggerEl))
-  console.log(popoverList)
+ 
+  // console.log(popoverList)
   return (
     <div className="body container-fluid maindiv">
       <div className='infobutton d-flex justify-content-end'>
