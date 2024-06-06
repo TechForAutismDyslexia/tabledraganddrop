@@ -258,7 +258,7 @@ const DragAndDropTable = () => {
         </button>
       </div>
       {createTable()}
-      <div className="cardposition">
+      <div className="cardposition d-flex flex-wrap justify-content-center">
         <div className="cards-container justify-content-center align-items-center mb-2">{createCards()}</div>
       </div>
       <div className="buttons">
