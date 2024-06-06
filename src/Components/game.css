@@ -1,26 +1,21 @@
 body{
-    background-image: url("./background1.jpg"); 
+    background-color: rgb(48, 218, 231);
     background-size:cover;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
     user-select: none;
   
   }
   .custom-table {
-    /* margin-top: 80px; */
     border-collapse: separate;
     margin: 20px 0;
     width: 100%;
     border: none;
     border-radius:30px;
   }
-  #title{
+  /* #title{
     margin-top: 10px;
-    /* margin-left: 35%;
-     */
     text-align: center;
     color: rgb(0, 0, 0);
-  }
+  } */
   
   .table-header{
       border:3px solid black;
@@ -33,42 +28,42 @@ body{
     }
   .table-cell {
     border: 3px solid rgb(0, 0, 0);
-    padding: 120px; /* Adjust padding as needed */
-    font-size: 16px; /* Adjust font size as needed */
+    padding: 120px; 
+    font-size: 16px;
     text-align: center;
-    width: 25%; /* Set equal width for each column */
+    width: 25%; 
     border-radius: 15px;
-    /* background-image: url('./background1.jpg');
-    background-size: 100%; */
-
-    /* background-color: #b7e5d8; */
   }
   
-  .cardposition{
-    border: 0px solid whitesmoke;
-    margin-left: 30px;
-    background-color: rgb(179, 246, 176);
+  /* .cardposition{
     border-radius: 20px;
-  }
+  } */
   
   .draggable {
     display: inline-block;
     position: relative;
     font-weight: bold;
     user-select: none;
-    border-radius: 10px; /* added border radius */
-    border: 1px solid #ccc; /* changed border color and style */
+    gap:5px;
+    border-radius: 20px; /* added border radius */
+    border: 3px solid #000000; /* changed border color and style */
     padding: 20px; /* increased padding for better alignment */
     margin: 10px; /* increased margin for better spacing */
     margin-top: 10px;
     margin-bottom: 10px;
-    background-color: #f09a89; /* changed background color */
+    background-color: rgb(234, 220, 200); /* changed background color */
     cursor: move;
-    box-shadow: 0 0 10px rgba(194, 202, 176,0.3); /* added box shadow */
+    box-shadow: 0 0 20px rgba(194, 202, 176,0.3) -0 -0 20px rgba(194,202,166,0.3); /* added box shadow */
+    transform:scale(1.09);
   }
   .correct-drop {
     background-color: green !important;
     color: white;
+  }
+  .wrong-drop{
+    background-color: red !important;
+    color: white;
+    transition: 0.2sec;
   }
   
 
@@ -78,10 +73,21 @@ body{
   }
   
   #nextbutton,#submitbutton,#logdata{
-    background-color: #4a536b;
+    background-color: #ec8f0c;
     color: white;
-  }
+    font : bold;
+    width:120px;
+    border-radius: 20px;
+    transition: all 0.2s ease;
 
+  }
+  #nextbutton:hover,#submitbutton:hover,#logdata:hover{
+    background-color: #ec8f0c;
+    color: white;
+    font : bold;
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3); /* Increased shadow for 3D effect */
+    transform: translate(-2px, -2px); /* Slight movement for depth illusion */
+  }
   @keyframes correctDropAnimation {
     0% { transform: translateY(0); opacity: 1; }
     50% { transform: translateY(-20px); opacity: 0.5; }

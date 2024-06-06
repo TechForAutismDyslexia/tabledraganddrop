@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import jsonData from './data.json';
-import './game.css'; 
+import './game.css';
 import correctaudio from '../Audio/correct.mp3';
 import wrongaudio from '../Audio/hooray.mp3';
+import hoorayaudio from '../Audio/wrong.mp3';
 import instructionaudio from '../Audio/instructionaudio.wav';
 import Confetti from 'react-confetti';
 import { Popover } from 'bootstrap';
@@ -17,7 +18,7 @@ const DragAndDropTable = () => {
     setCorrectTries(0);
     resetButtonsVisibility();
     const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
-  const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new Popover(popoverTriggerEl));
+    const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new Popover(popoverTriggerEl));
   }, [currentPage]);
 
   const drag = event => {
@@ -104,6 +105,8 @@ const DragAndDropTable = () => {
   };
 
   const nextPage = () => {
+    const audio = new Audio(hoorayaudio);
+    audio.play();
     setCurrentPage(prevPage => prevPage + 1);
   };
 
@@ -220,17 +223,28 @@ const DragAndDropTable = () => {
   const handleSubmit = () => {
     const currentItem = jsonData[currentPage.toString()];
     const numberOfDraggableCards = Object.keys(currentItem).reduce((sum, key) => {
-      if (key !== 'Distracter') {
+      if (key!== 'Distracter') {
         sum += currentItem[key].length;
       }
       return sum;
     }, 0);
     const numberOfCorrectDropsNeeded = numberOfDraggableCards;
     if (correctTries === numberOfCorrectDropsNeeded) {
-      const nextButton = document.getElementById('nextbutton');
-      nextButton.style.display = 'block';
-      const submitButton = document.getElementById('submitbutton');
-      submitButton.style.display = 'none';
+      if (currentPage === Object.keys(jsonData).length) {
+        const submitButton = document.getElementById('submitbutton');
+        if (submitButton) {
+          submitButton.style.display = 'none';
+        }
+        const logDataButton = document.getElementById('logdata');
+        if (logDataButton) {
+          logDataButton.style.display = 'block';
+        }
+      } else {
+        const nextButton = document.getElementById('nextbutton');
+        if (nextButton) {
+          nextButton.style.display = 'block';
+        }
+      }
       setShowConfetti(true);
       setTimeout(() => setShowConfetti(false), 5000); // Confetti for 5 seconds
     }
@@ -243,7 +257,7 @@ const DragAndDropTable = () => {
     if (submitButton) submitButton.style.display = 'block';
   };
 
-  
+
 
   return (
     <div className="body container-fluid maindiv">
@@ -278,7 +292,7 @@ const DragAndDropTable = () => {
             <button
               id="logdata"
               className='btn btn-custom btn-block'
-              style={{ display: currentPage > ((Object.keys(jsonData).length) - 1) ? 'block' : 'none' }}
+              style={{ display: 'none' }}
               onClick={logData}
             >
               Logdata
