@@ -19,7 +19,7 @@ body{
       user-select: none;
       color: rgb(255, 255, 255);
       border-radius: 15px;
-      background-color: #b68c53;
+      background-color: #be9b6b;
     }
   .table-cell {
     border: 3px solid rgb(0, 0, 0);
@@ -30,20 +30,21 @@ body{
     border-radius: 15px;
   }
   
-  /* .cardposition{
+  .cardposition{
     border-radius: 20px;
-  } */
+    row-gap: 6px;
+  }
   
   .draggable {
     display: inline-block;
     position: relative;
     font-weight: bold;
     user-select: none;
-    gap:5px;
+    
     border-radius: 20px; /* added border radius */
     border: 3px solid #000000; /* changed border color and style */
     padding: 20px; /* increased padding for better alignment */
-    margin: 10px; /* increased margin for better spacing */
+    margin: 20px; /* increased margin for better spacing */
     margin-top: 10px;
     margin-bottom: 10px;
     background-color: rgb(234, 220, 200); /* changed background color */
