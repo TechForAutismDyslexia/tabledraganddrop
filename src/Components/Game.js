@@ -7,12 +7,12 @@ import hoorayaudio from '../Audio/wrong.mp3';
 import instructionaudio from '../Audio/instructionaudio.wav';
 import Confetti from 'react-confetti';
 import { Popover } from 'bootstrap';
-
-const DragAndDropTable = () => {
+import { useNavigate } from 'react-router-dom';
+const DragAndDropTable = ({tries,setTries,timer,setTimer}) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [tries, setTries] = useState(0);
   const [correctTries, setCorrectTries] = useState(0);
   const [showConfetti, setShowConfetti] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setCorrectTries(0);
@@ -20,6 +20,15 @@ const DragAndDropTable = () => {
     const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
     const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new Popover(popoverTriggerEl));
   }, [currentPage]);
+  useEffect(() => {
+    let startTime = new Date().getTime();
+    let timerInterval = setInterval(() => {
+      const currentTime = new Date().getTime();
+      const elapsedTimer = currentTime - startTime;
+      setTimer(elapsedTimer); 
+    }, 1000);
+    return () => clearInterval(timerInterval);
+  }, []);
 
   const drag = event => {
     event.dataTransfer.setData("text", event.target.id);
@@ -111,7 +120,7 @@ const DragAndDropTable = () => {
   };
 
   const logData = () => {
-    console.log("The number of tries:", tries);
+    navigate('/Result');
   };
 
   const infoaudio = () => {
@@ -295,7 +304,7 @@ const DragAndDropTable = () => {
               style={{ display: 'none' }}
               onClick={logData}
             >
-              Logdata
+              Result
             </button>
           </div>
         )}

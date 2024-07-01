@@ -40,7 +40,6 @@ body{
     position: relative;
     font-weight: bold;
     user-select: none;
-    
     border-radius: 20px; /* added border radius */
     border: 3px solid #000000; /* changed border color and style */
     padding: 20px; /* increased padding for better alignment */
