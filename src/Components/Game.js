@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import jsonData from './data.json';
 import './game.css';
 import correctaudio from '../Audio/correct.mp3';
@@ -8,10 +8,12 @@ import instructionaudio from '../Audio/instructionaudio.wav';
 import Confetti from 'react-confetti';
 import { Popover } from 'bootstrap';
 import { useNavigate } from 'react-router-dom';
-const DragAndDropTable = ({tries,setTries,timer,setTimer}) => {
+
+const DragAndDropTable = ({ tries, setTries, timer, setTimer }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [correctTries, setCorrectTries] = useState(0);
   const [showConfetti, setShowConfetti] = useState(false);
+  const [shuffledCards, setShuffledCards] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -19,16 +21,49 @@ const DragAndDropTable = ({tries,setTries,timer,setTimer}) => {
     resetButtonsVisibility();
     const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
     const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new Popover(popoverTriggerEl));
+    shuffleAndSetCards();
   }, [currentPage]);
+
   useEffect(() => {
     let startTime = new Date().getTime();
     let timerInterval = setInterval(() => {
       const currentTime = new Date().getTime();
       const elapsedTimer = currentTime - startTime;
-      setTimer(elapsedTimer); 
+      setTimer(elapsedTimer);
     }, 1000);
     return () => clearInterval(timerInterval);
   }, []);
+
+  const shuffleAndSetCards = () => {
+    const currentItem = jsonData[currentPage.toString()];
+    const cards = [];
+
+    for (const key in currentItem) {
+      if (key !== 'Distracter') {
+        const values = currentItem[key];
+        values.forEach((value, index) => {
+          const card = {
+            id: `card_${key}_${index}_${currentPage}`,
+            type: key,
+            value: value
+          };
+          cards.push(card);
+        });
+      }
+    }
+
+    const distracterValues = currentItem['Distracter'];
+    distracterValues.forEach((value, index) => {
+      const card = {
+        id: `card_Distracter_${index}_${currentPage}`,
+        type: 'Distracter',
+        value: value
+      };
+      cards.push(card);
+    });
+
+    setShuffledCards(shuffleArray(cards));
+  };
 
   const drag = event => {
     event.dataTransfer.setData("text", event.target.id);
@@ -165,62 +200,23 @@ const DragAndDropTable = ({tries,setTries,timer,setTimer}) => {
   };
 
   const createCards = () => {
-    const currentItem = jsonData[currentPage.toString()];
-    const cards = [];
-
-    // Collect all cards including main and distracter cards
-    const allCards = [];
-    for (const key in currentItem) {
-      if (key !== 'Distracter') {
-        const values = currentItem[key];
-        values.forEach((value, index) => {
-          const card = {
-            id: `card_${key}_${index}_${currentPage}`,
-            type: key,
-            value: value
-          };
-          allCards.push(card);
-        });
-      }
-    }
-
-    const distracterValues = currentItem['Distracter'];
-    distracterValues.forEach((value, index) => {
-      const card = {
-        id: `card_Distracter_${index}_${currentPage}`,
-        type: 'Distracter',
-        value: value
-      };
-      allCards.push(card);
-    });
-
-    // Shuffle the cards
-    const shuffledCards = shuffleArray(allCards);
-
-    // Create JSX elements for shuffled cards
-    shuffledCards.forEach(card => {
-      const jsxCard = (
-        <div
-          key={card.id}
-          id={card.id}
-          className="draggable"
-          draggable
-          onDragStart={drag}
-          onTouchStart={touchStart}
-          onTouchMove={touchMove}
-          onTouchEnd={touchEnd}
-          data-type={card.type}
-        >
-          {card.value}
-        </div>
-      );
-      cards.push(jsxCard);
-    });
-
-    return cards;
+    return shuffledCards.map(card => (
+      <div
+        key={card.id}
+        id={card.id}
+        className="draggable"
+        draggable
+        onDragStart={drag}
+        onTouchStart={touchStart}
+        onTouchMove={touchMove}
+        onTouchEnd={touchEnd}
+        data-type={card.type}
+      >
+        {card.value}
+      </div>
+    ));
   };
 
-  // Function to shuffle an array
   const shuffleArray = array => {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -232,7 +228,7 @@ const DragAndDropTable = ({tries,setTries,timer,setTimer}) => {
   const handleSubmit = () => {
     const currentItem = jsonData[currentPage.toString()];
     const numberOfDraggableCards = Object.keys(currentItem).reduce((sum, key) => {
-      if (key!== 'Distracter') {
+      if (key !== 'Distracter') {
         sum += currentItem[key].length;
       }
       return sum;
@@ -265,8 +261,6 @@ const DragAndDropTable = ({tries,setTries,timer,setTimer}) => {
     if (nextButton) nextButton.style.display = 'none';
     if (submitButton) submitButton.style.display = 'block';
   };
-
-
 
   return (
     <div className="body container-fluid maindiv">
