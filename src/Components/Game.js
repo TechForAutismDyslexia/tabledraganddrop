@@ -9,11 +9,13 @@ import Confetti from 'react-confetti';
 import { Popover } from 'bootstrap';
 import { useNavigate } from 'react-router-dom';
 
-const DragAndDropTable = ({ tries, setTries, timer, setTimer }) => {
+const DragAndDropTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [correctTries, setCorrectTries] = useState(0);
   const [showConfetti, setShowConfetti] = useState(false);
   const [shuffledCards, setShuffledCards] = useState([]);
+  const [tries,setTries] = useState(0);
+  const [timer,setTimer] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -155,6 +157,10 @@ const DragAndDropTable = ({ tries, setTries, timer, setTimer }) => {
   };
 
   const logData = () => {
+    console.log('Total Tries:', tries);
+    localStorage.setItem('tries', tries);
+    console.log('Total timer:', timer);
+    localStorage.setItem('timer', timer/1000);
     navigate('/Result');
   };
 
