@@ -10,7 +10,7 @@ export default function App(){
   const [tries,setTries] = useState(0);
   const [timer,setTimer] = useState(0);
   return (
-    <Router basename="/tabledraganddrop">
+    <Router basename="/games/tabledraganddrop">
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/game" element={<DragAndDropTable setTries={setTries} setTimer={setTimer} />} />
