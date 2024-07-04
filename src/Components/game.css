@@ -23,10 +23,12 @@ body{
     }
   .table-cell {
     border: 3px solid rgb(0, 0, 0);
-    padding: 120px; 
+    /* padding: 120px;  */
     font-size: 16px;
     text-align: center;
-    width: 25%; 
+    /* width: 25%;
+      */
+    height: 250px ;
     border-radius: 15px;
   }
   
@@ -42,10 +44,8 @@ body{
     user-select: none;
     border-radius: 20px; /* added border radius */
     border: 3px solid #000000; /* changed border color and style */
-    padding: 20px; /* increased padding for better alignment */
-    margin: 20px; /* increased margin for better spacing */
-    margin-top: 10px;
-    margin-bottom: 10px;
+    padding: 15px; /* increased padding for better alignment */
+    margin: 15px; /* increased margin for better spacing */
     background-color: rgb(234, 220, 200); /* changed background color */
     cursor: move;
     box-shadow: 0 0 20px rgba(194, 202, 176,0.3) -0 -0 20px rgba(194,202,166,0.3); /* added box shadow */

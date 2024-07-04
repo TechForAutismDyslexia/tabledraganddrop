@@ -269,7 +269,7 @@ const DragAndDropTable = () => {
   };
 
   return (
-    <div className="body container-fluid maindiv">
+    <div className="container-fluid  maindiv">
       <div className='infobutton d-flex justify-content-end'>
         <button type="button" className='btn btn-warning mt-1' data-bs-container='body' data-bs-toggle="popover" data-bs-title="Instruction" data-bs-placement="left" data-bs-content="The distractor card doesm't drop in any table cell.">
           Instruction
@@ -282,7 +282,7 @@ const DragAndDropTable = () => {
       </div>
       {createTable()}
       <div className="cardposition d-flex flex-wrap justify-content-center">
-        <div className="cards-container justify-content-center align-items-center">{createCards()}</div>
+        <div className="cards-container d-flex flex-wrap justify-content-center align-items-center">{createCards()}</div>
       </div>
       <div className="buttons">
         {currentPage < (Object.keys(jsonData).length) ? (
