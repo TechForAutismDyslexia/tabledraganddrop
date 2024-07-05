@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import jsonData from './data.json';
 import './game.css';
 import correctaudio from '../Audio/correct.mp3';
@@ -14,8 +14,10 @@ const DragAndDropTable = () => {
   const [correctTries, setCorrectTries] = useState(0);
   const [showConfetti, setShowConfetti] = useState(false);
   const [shuffledCards, setShuffledCards] = useState([]);
-  const [tries,setTries] = useState(0);
-  const [timer,setTimer] = useState(0);
+  const [tries, setTries] = useState(0);
+  const [timer, setTimer] = useState(0);
+  const [showNextButton, setShowNextButton] = useState(false);
+  const [showLogDataButton, setShowLogDataButton] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -160,7 +162,7 @@ const DragAndDropTable = () => {
     console.log('Total Tries:', tries);
     localStorage.setItem('tries', tries);
     console.log('Total timer:', timer);
-    localStorage.setItem('timer', timer/1000);
+    localStorage.setItem('timer', timer / 1000);
     navigate('/Result');
   };
 
@@ -242,19 +244,10 @@ const DragAndDropTable = () => {
     const numberOfCorrectDropsNeeded = numberOfDraggableCards;
     if (correctTries === numberOfCorrectDropsNeeded) {
       if (currentPage === Object.keys(jsonData).length) {
-        const submitButton = document.getElementById('submitbutton');
-        if (submitButton) {
-          submitButton.style.display = 'none';
-        }
-        const logDataButton = document.getElementById('logdata');
-        if (logDataButton) {
-          logDataButton.style.display = 'block';
-        }
+        setShowNextButton(false);
+        setShowLogDataButton(true);
       } else {
-        const nextButton = document.getElementById('nextbutton');
-        if (nextButton) {
-          nextButton.style.display = 'block';
-        }
+        setShowNextButton(true);
       }
       setShowConfetti(true);
       setTimeout(() => setShowConfetti(false), 5000); // Confetti for 5 seconds
@@ -262,14 +255,12 @@ const DragAndDropTable = () => {
   };
 
   const resetButtonsVisibility = () => {
-    const nextButton = document.getElementById('nextbutton');
-    const submitButton = document.getElementById('submitbutton');
-    if (nextButton) nextButton.style.display = 'none';
-    if (submitButton) submitButton.style.display = 'block';
+    setShowNextButton(false);
+    setShowLogDataButton(false);
   };
 
   return (
-    <div className="container-fluid  maindiv">
+    <div className="container-fluid maindiv">
       <div className='infobutton d-flex justify-content-end'>
         <button type="button" className='btn btn-warning mt-1' data-bs-container='body' data-bs-toggle="popover" data-bs-title="Instruction" data-bs-placement="left" data-bs-content="The distractor card doesm't drop in any table cell.">
           Instruction
@@ -285,10 +276,9 @@ const DragAndDropTable = () => {
         <div className="cards-container d-flex flex-wrap justify-content-center align-items-center">{createCards()}</div>
       </div>
       <div className="buttons">
-        {currentPage < (Object.keys(jsonData).length) ? (
+        {showNextButton ? (
           <div className='nextbutton d-flex justify-content-center align-items-center'>
             <button
-              style={{ display: 'none' }}
               onClick={nextPage}
               id="nextbutton"
               className='btn btn-custom btn-block'
@@ -297,27 +287,29 @@ const DragAndDropTable = () => {
             </button>
           </div>
         ) : (
-          <div className='logdata d-flex justify-content-center align-items-center'>
+          showLogDataButton && (
+            <div className='logdata d-flex justify-content-center align-items-center'>
+              <button
+                id="logdata"
+                className='btn btn-custom btn-block'
+                onClick={logData}
+              >
+                Result
+              </button>
+            </div>
+          )
+        )}
+        {!showNextButton && (
+          <div className="submitbutton d-flex justify-content-center align-items-center">
             <button
-              id="logdata"
-              className='btn btn-custom btn-block'
-              style={{ display: 'none' }}
-              onClick={logData}
+              onClick={handleSubmit}
+              id="submitbutton"
+              className='btn btn-custom btn-primary mt-2'
             >
-              Result
+              Submit
             </button>
           </div>
         )}
-        <div className="submitbutton d-flex justify-content-center align-items-center">
-          <button
-            style={{ display: 'block' }}
-            onClick={handleSubmit}
-            id="submitbutton"
-            className='btn btn-custom btn-primary mt-2'
-          >
-            Submit
-          </button>
-        </div>
       </div>
       {showConfetti && <Confetti width={window.innerWidth} height={window.innerHeight} />}
     </div>

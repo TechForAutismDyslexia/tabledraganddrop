@@ -10,6 +10,7 @@ body{
     width: 100%;
     border: none;
     border-radius:30px;
+    table-layout: fixed;
   }
   
   .table-header{
@@ -28,7 +29,7 @@ body{
     text-align: center;
     /* width: 25%;
       */
-    height: 250px ;
+    height: 300px ;
     border-radius: 15px;
   }
   
