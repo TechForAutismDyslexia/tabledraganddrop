@@ -1,5 +1,5 @@
 body{
-    background-color: rgb(48, 218, 231);
+    background-color: #E3F4F4;
     background-size:cover;
     user-select: none;
   
@@ -20,7 +20,7 @@ body{
       user-select: none;
       color: rgb(255, 255, 255);
       border-radius: 15px;
-      background-color: #be9b6b;
+      background-color: #7895B2;
     }
   .table-cell {
     border: 3px solid rgb(0, 0, 0);
@@ -78,7 +78,7 @@ body{
 
   }
   #nextbutton:hover,#submitbutton:hover,#logdata:hover{
-    background-color: #ec8f0c;
+    background-color: #B5C18E;
     color: white;
     font : bold;
     box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3); /* Increased shadow for 3D effect */

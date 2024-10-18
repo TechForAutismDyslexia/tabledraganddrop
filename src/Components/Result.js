@@ -7,25 +7,33 @@ export default function Result() {
       try {
         const tries = localStorage.getItem('tries');
         const timer = localStorage.getItem('timer');
-        if(tries === null || timer === null){
+        if (tries === null || timer === null) {
           return;
         }
-        if(tries === 0|| timer === 0){
+        if (tries === "0" || timer === "0") {
           return;
         }
-        const gameId = 7;
-        if (tries && timer) {
+        const gameId = localStorage.getItem('gameId');
+        const childId = localStorage.getItem('childId');
+        const token = localStorage.getItem('logintoken');
+        if (gameId && childId && token) {
           const status = true;
-          const response = await axios.post('https://jwlgamesbackend.vercel.app/api/caretaker/sendgamedata', {
+          const response = await axios.put(`https://jwlgamesbackend.vercel.app/api/caretaker/${gameId}/${childId}`, {
             tries,
             timer,
-            gameId,
             status
+          },
+          {
+            headers: {
+              'Authorization': ` ${token}`,
+            }
           });
           console.log(response);
         }
         localStorage.removeItem('tries');
         localStorage.removeItem('timer');
+        localStorage.removeItem('gameId');
+      
       } catch (err) {
         console.log(err);
       }
