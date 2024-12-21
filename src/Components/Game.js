@@ -25,7 +25,7 @@ const DragAndDropTable = () => {
     const fetchData = async () => {
       try {
         const id = '66e28814d4d1ee09f200ccab';
-        const response = await axios.get(`http://localhost:5000/api/data/${id}`);
+        const response = await axios.get(`https://api.joywithlearning.com/api/tablednd/data/${id}`);
         setJsonData(response.data.data);
         setLoading(false);
         console.log('Data fetched:', response.data.data);
